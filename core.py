@@ -40,23 +40,23 @@ class core():
         self.loadFile()
     
     def loadFile(self):
-        import json
+        import os, json
         try:
-            with open("infolist.db", "r") as f:
+            with open(os.path.join(os.path.dirname(__file__), "infolist.db"), "r") as f:
                 self.infoList = json.load(f, object_hook=core.student_info.load)
         except:
             self.infoList = []
         try:
-            with open("scorelist.db", "r") as f:
+            with open(os.path.join(os.path.dirname(__file__), "scorelist.db"), "r") as f:
                 self.scoreList = json.load(f, object_hook=core.student_score.load)
         except:
             self.scoreList = []
     
     def saveFile(self):
-        import json
-        with open("infolist.db", "w") as f:
+        import os, json
+        with open(os.path.join(os.path.dirname(__file__), "infolist.db"), "w") as f:
             json.dump(self.infoList, f, default=core.student_data.dump, indent=4, separators=(',', ':'))
-        with open("scorelist.db", "w") as f:
+        with open(os.path.join(os.path.dirname(__file__), "scorelist.db"), "w") as f:
             json.dump(self.scoreList, f, default=core.student_data.dump, indent=4, separators=(',', ':'))
     
     def query(self, request, type = 0):
