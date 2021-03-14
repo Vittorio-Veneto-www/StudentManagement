@@ -85,7 +85,6 @@ class ui_backend():
                 tmp = {self.properties[index.column()]: data}
                 self.core.changeValueByIndex(self.dataList[index.row()]['index'], tmp, self.type)
                 self.ui.MainWindow.contentChanged = True
-                self.ui.resetTable()
 
             def append(self):
                 tmp = {}
