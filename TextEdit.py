@@ -14,7 +14,7 @@ class TextEdit(QtWidgets.QTextEdit):
         self._changed = False
         self.setTabChangesFocus( True )
         self.setText(tr)
-        self.textChanged.connect( self._handle_text_changed )
+        self.textChanged.connect(self._handle_text_changed)
 
     def focusInEvent(self, event):
         super(TextEdit, self).focusInEvent( event )

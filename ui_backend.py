@@ -178,4 +178,7 @@ class ui_backend():
         model = tableModel(self, self.ui.tableView)
         self.ui.tableView.setModel(model)
         self.ui.tableView.setItemDelegate(tableContent(model, self.ui.tableView))
+        if self.type == 0:
+            self.ui.tableView.setColumnWidth(3, 250)
+            self.ui.tableView.setColumnWidth(4, 250)
         self.ui.tableView.show()

@@ -64,7 +64,7 @@ class core():
         if type == 0:
             cnt = 0
             for info in self.infoList:
-                if not request or request == info.dict()['name'] or request == info.dict()['id']:
+                if not request or request in info.dict()['name'] or request in info.dict()['id']:
                     tmp = info.dict().copy()
                     tmp['index'] = cnt
                     requestSatisfied.append(tmp)
@@ -72,7 +72,7 @@ class core():
         else:
             cnt = 0
             for score in self.scoreList:
-                if not request or request == score.dict()['id']:
+                if not request or request in score.dict()['id']:
                     tmp = score.dict().copy()
                     tmp['index'] = cnt
                     requestSatisfied.append(tmp)
