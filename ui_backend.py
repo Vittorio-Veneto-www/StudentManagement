@@ -14,7 +14,7 @@ class ui_backend():
         import Ui_gui
         class gui(QWidget):
             def closeEvent(self, event):
-                if self.contentChanged:
+                if self.ui.contentChanged:
                     x = QWidget()
                     reply = QMessageBox.information(x,'提示','是否保存', QMessageBox.Ok | QMessageBox.Cancel, QMessageBox.Ok)
                     if reply == QMessageBox.Ok:
@@ -22,11 +22,12 @@ class ui_backend():
                 super().closeEvent(event)
         MainWindow = gui()
         MainWindow.core = self.core
+        MainWindow.ui = self
         self.ui = Ui_gui.Ui_Form()
         self.ui.setupUi(MainWindow)
         self.MainWindow = MainWindow
         self.type = 0
-        self.MainWindow.contentChanged = False
+        self.contentChanged = False
         self.resetTable()
         MainWindow.show()
 
@@ -40,7 +41,7 @@ class ui_backend():
         
         def saveFile():
             self.core.saveFile()
-            self.MainWindow.contentChanged = False
+            self.contentChanged = False
 
         self.ui.infoQuery.clicked.connect(infoQuery)
         self.ui.scoreQuery.clicked.connect(scoreQuery)
@@ -83,16 +84,25 @@ class ui_backend():
 
             def edit(self, index, data):
                 tmp = {self.properties[index.column()]: data}
-                self.core.changeValueByIndex(self.dataList[index.row()]['index'], tmp, self.type)
-                self.ui.MainWindow.contentChanged = True
+                if self.core.changeValueByIndex(self.dataList[index.row()]['index'], tmp, self.type):
+                    self.dataList[index.row()][self.properties[index.column()]] = data
+                    self.ui.contentChanged = True
+                else:
+                    x = QWidget()
+                    QMessageBox.information(x, "提示", "非法输入", QMessageBox.Yes)
+                    self.ui.drawTable()
 
             def append(self):
                 tmp = {}
                 for i in range(len(self.properties)):
                     tmp[self.properties[i]] = self.data[i]
-                self.core.append(tmp, self.type)
-                self.ui.MainWindow.contentChanged = True
-                self.ui.resetTable()
+                if self.core.append(tmp, self.type):
+                    self.ui.contentChanged = True
+                    self.ui.resetTable()
+                else:
+                    x = QWidget()
+                    QMessageBox.information(x, "提示", "非法输入", QMessageBox.Yes)
+                    self.ui.drawTable()
 
             def delete(self, index):
                 self.core.delete(self.dataList[index]['index'], self.type)
